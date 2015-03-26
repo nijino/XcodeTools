@@ -17,10 +17,10 @@
 	<key>IDECodeSnippetSummary</key>
 	<string>声明copy属性变量</string>
 	<key>IDECodeSnippetTitle</key>
-	<string>Property With Copy</string>
+	<string>Property Copy</string>
 	<key>IDECodeSnippetUserSnippet</key>
 	<true/>
 	<key>IDECodeSnippetVersion</key>
-	<integer>0</integer>
+	<integer>2</integer>
 </dict>
 </plist>
