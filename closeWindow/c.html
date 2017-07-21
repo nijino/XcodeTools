@@ -1,0 +1,460 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>openjs</title>
+    <style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .title {
+        font-size: 16px;
+    }
+
+    html {
+        font-size: 100px;
+    }
+
+    body {
+        font-size: 16px;
+    }
+
+    button {
+        display: block;
+        margin: 10px auto;
+        font-size: 28px;
+    }
+
+    .group {
+        font-size: 16px;
+        line-height: 1.5;
+        border: 1px solid #999;
+        margin: 10px auto;
+        text-align: center;
+    }
+
+    .group input {
+        border: 1px solid #999;
+    }
+    </style>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+</head>
+
+<body>
+    <div class="group">
+        <p class="title">cuid</p>
+        <button type="button" id="cuid">getCuid</button>
+    </div>
+    <div class="group">
+        <p class="title">时长统计：</p>
+        <button type="button" id="duration">duration</button>
+    </div>
+    <div class="group">
+        <p class="title">feed session_id && click_id：</p>
+        <button type="button" id="getSessionClick">getSessionClick</button>
+    </div>
+    <div class="group">
+        <p>设置底部bar评论</p>
+        <select id="commentBarAnimate">
+            <option value="0">无动画:0</option>
+            <option value="1">有动画:1</option>
+        </select>
+        </br>
+        <label for="commentBarInput">底部bar评论框内文字</label>
+        <input id="commentBarInput" type="" name="commentBarInput" value="testDemo">
+        </br>
+        <label for="commentBarPlaceHolder">点击后调起评论回复框内文字</label>
+        <input id="commentBarPlaceHolder" type="" name="commentBarPlaceHolder" value="testDemo2">
+        <button type="button" id="settoolbar">settoolbar</button>
+    </div>
+
+    <div class="group">
+        <p>调起评论回复框</p>
+        <select id="commentBoxType">
+            <option value="0">发表评论:0</option>
+            <option value="1">回复评论:1</option>
+        </select>
+        </br>
+        <label for="commentBoxParentId">parent_id</label>
+        <input id="commentBoxParentId" type="" name="commentBoxParentId" value="1000000">
+        </br>
+        <label for="commentBoxReName">回复rename</label>
+        <input id="commentBoxReName" type="" name="commentBoxReName" value="testDemo">
+        </br>
+        <label for="commentBoxPlaceHolder">回复框内容</label>
+        <input id="commentBoxPlaceHolder" type="" name="commentBoxPlaceHolder" value="testDemo2">
+        <button type="button" id="showCommentBox">showCommentBox</button>
+    </div>
+    <div class="group">
+        <p>获取 AB 实验开关值</p>
+        <button type="button" id="ABTestInfo">getABTestInfo</button>
+    </div>
+    <div class="group">
+        <p class="title">图片查看器:</p>
+        <img src="http://www.baidu.com/img/baidu_jgylogo3.gif" id="imageView">
+    </div>
+
+
+    <div class="group">
+        <button type="button" id="network">获取网络状况</button>
+    </div>
+    <div class="group">
+        <button type="button" id="pblog">手动发log</button>
+    </div>
+
+    <div id="commentModule"></div>
+        <button type="button" id="barShowMenu">顶bar菜单 showmenu</button>
+    </div>
+    <div class="group">
+        <button type="button" id="getWebStorage">获取webstorage</button>
+        <button type="button" id="setWebStorage">设置webstorage</button>
+    </div>
+    <div class="group">
+        <a href="#" id="cmt-context">comment context</a>
+        <a href="#" id="cmt-operate">comment operate</a>
+        <a href="#" id="cmt-refresh">comment refresh</a>
+    </div>
+    <div class="group">
+        <a href="#" id="new-toast">newToast</a>
+        <a href="#" id="dismiss-toast">dismissToast</a>
+    </div>
+    <div class="group">
+        <a href="#" id="is-webp">isWebp</a>
+    </div>
+    <div class="group">
+        <a href="#" id="get-idfa">getIdfa</a>
+    </div>
+    <div class="group">
+        <a href="#" id="close-window">close-window</a>
+    </div>
+    <!-- <script type="text/javascript" src="https://s.bdstatic.com/common/openjs/commentSDK.js?aaaaa=1111"></script> -->
+    <script type="text/javascript" src="https://blueimp.github.io/JavaScript-MD5/js/md5.js"></script>
+
+    <!-- <script type="text/javascript" src="https://s.bdstatic.com/common/openjs/amd/eslx.js"></script> -->
+    
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js"></script> -->
+
+    <!-- <script type="text/javascript" src="./index.js"></script> -->
+    <script type="text/javascript" src="./indexwitheslx.js"></script>
+    <!-- <script type="text/javascript" src="./openjs/commentSDK.js"></script> -->
+
+    <script type="text/javascript">
+        /* eslint-disable */
+        BoxJS.config({
+            id: 'feed',
+            success: function(obj) {
+                if (obj.errno == 0) {
+                    //时长统计
+                    var isAppear = false;
+                    var duration = document.querySelector('#duration');
+                    var getSessionClick = document.querySelector('#getSessionClick');
+                    var commentBarInput = document.querySelector('#commentBarInput');
+                    var settoolbar = document.querySelector('#settoolbar');
+
+                    getSessionClick.addEventListener('click', function() {
+                        BoxJS.invoke('feed.getSessionClick', {
+                            success: function(data) {
+                                alert('session_id:' + data.session_id + ',click_id:' + data.click_id);
+                            },
+                            fail: function(a, b) {
+                                alert(a + '~' + JSON.stringify(b));
+                            }
+                        });
+                    });
+
+                    BoxJS.ui('subscribe', function(a) {
+                        var subscribe = new a('landing_and_bjh', {
+                            type: 'feedinterest',
+                            isaladin: 0
+                        });
+                        subscribe.toast({
+                            type: 'tips',
+                            text: '关注失败,请重新尝试'
+                        })
+                    })
+
+                    var commentBarPlaceHolder = document.querySelector('#commentBarPlaceHolder');
+                    var commentBarAnimate = document.querySelector('#commentBarAnimate');
+                    settoolbar.addEventListener('click', function() {
+                        BoxJS.invoke('display.toolBar', {
+                            action: 'set',
+                            data: {
+                                'toolids': [{
+                                    id: '4',
+                                    eventName: 'commentResult',
+                                    visible: 1,
+                                    animate: parseInt(commentBarAnimate.value),
+                                    data: {
+                                        topic_id: 1117000001264909,
+                                        input_content: commentBarInput.value,
+                                        placeholder: commentBarPlaceHolder.value
+                                    }
+                                }]
+                            }
+                        });
+                    });
+                    var cuid = document.querySelector('#cuid');
+                    cuid.addEventListener('click', function() {
+                        BoxJS.invoke('utils.getCuid', {
+                            success: function(a) {
+                                alert('cuid:' + a)
+                            }
+                        });
+                    });
+
+                    var commentBoxParentId = document.querySelector('#commentBoxParentId');
+                    var commentBoxType = document.querySelector('#commentBoxType');
+                    var commentBoxPlaceHolder = document.querySelector('#commentBoxPlaceHolder');
+                    var showCommentBox = document.querySelector('#showCommentBox');
+                    showCommentBox.addEventListener('click', function() {
+                        var type = parseInt(commentBoxType.value);
+                        var data = {
+                            type: type,
+                            placeholder: commentBoxPlaceHolder.value
+                        }
+                        if(type == 1){
+                            data.parent_id = commentBoxParentId.value ? parseInt(commentBoxParentId.value) : '';
+                            data.rename = commentBoxReName.value;
+                        }
+                        BoxJS.invoke('display.showCommentBox', {
+                            data: data
+                        });
+                    });
+
+                    duration.addEventListener('click', function() {
+                        if (!isAppear) {
+                            BoxJS.invoke('log.duration', {
+                                action: 'appear',
+                                data: {
+                                    key: 'demo_comment',
+                                    options: {
+                                        nid: 'demo_nid'
+                                    }
+                                }
+                            });
+                            duration.innerHTML = 'duration:appear';
+                        } else {
+                            BoxJS.invoke('log.duration', {
+                                action: 'disappear',
+                                data: {
+                                    key: 'demo_comment',
+                                    options: {
+                                        nid: 'demo_nid'
+                                    }
+                                }
+                            });
+                            duration.innerHTML = 'duration:disappear';
+                        }
+                        isAppear = !isAppear;
+                    });
+
+                    //图片查看器
+                    var imageView = document.querySelector('#imageView');
+                    imageView.addEventListener('click', function() {
+                        BoxJS.invoke('display.imageView', {
+                            data: {
+                                type: "0",
+                                url: ['http://www.baidu.com/img/baidu_jgylogo3.gif'],
+                                index: 0,
+                                source: 'feed',
+                                slog: {
+                                    context: 'demo_context'
+                                },
+                                position: {
+                                    top: 10,
+                                    left: 10,
+                                    right: 20,
+                                    bottom: 20
+                                }
+                            }
+                        })
+                    })
+                    BoxJS.invoke('log.pblog', {
+                        data: {
+                            type: 'event',
+                            args: ['demo_event', 'feed', {
+                                a: 1
+                            }]
+                        }
+                    });
+
+                    var network = document.querySelector('#network');
+                    network.addEventListener('click', function() {
+                        BoxJS.invoke('utils.getNetwork', {
+                            success: function(data) {
+                                alert(JSON.stringify(data));
+                            }
+                        });
+                        BoxJS.invoke('utils.getDeviceInfo',{
+                            keys: ['netInfo'],
+                            success: function(data) {
+                                alert(JSON.stringify(data));
+                            }
+                        });
+                    });
+
+                    BoxJS.invoke('utils.getLocation', {
+                        success: function(data) {
+                            alert(JSON.stringify(data));
+                        }
+                    });
+
+                    var ABTestInfo = document.querySelector('#ABTestInfo');
+                    ABTestInfo.addEventListener('click', function() {
+                        BoxJS.invoke('utils.getABTestInfo', {
+                            success: function(data) {
+                                alert('ABTestInfo:' + JSON.stringify(data));
+                            }
+                        });
+                    })
+
+                    var Pblog = document.querySelector('#pblog');
+                    Pblog.addEventListener('click', function() {
+                        BoxJS.invoke('log.pblog', {
+                            data: {
+                                type: 'event',
+                                args: ['demo_event', 'feed', {
+                                    a: 1
+                                }]
+                            }
+                        });
+                    })
+
+                    // 显示顶bar菜单
+                    var barShowMenu = document.querySelector('#barShowMenu')
+                    barShowMenu.addEventListener('click', function (e) {
+                        BoxJS.invoke('utils.showMenu');
+                    })
+
+                    // 获取 设置 webstorage
+                    var getWebStorage = document.querySelector('#getWebStorage')
+                    var setWebStorage = document.querySelector('#setWebStorage')
+                    getWebStorage.addEventListener('click', function (e) {
+                        BoxJS.invoke('utils.webStorage', {
+                            data: {
+                                action: 'get',
+                                key: 'share_has_shown_feed_bubble'
+                            },
+                            callback: function (data) {
+                                alert(JSON.stringify(data))
+                            }
+                        });
+                    })
+                    setWebStorage.addEventListener('click', function (e) {
+                        BoxJS.invoke('utils.webStorage', {
+                            data: {
+                                action: 'set',
+                                key: 'share_has_shown_feed_bubble',
+                                data: '1'
+                            },
+                            callback: function (data) {
+                                alert(JSON.stringify(data))
+                            }
+                        });
+                    })
+
+                    // 9.1 评论 NA 端能力联调
+                    document.getElementById('cmt-operate').addEventListener('click', function (e) {
+                        e.preventDefault()
+                        BoxJS.invoke('comment.operate', {
+                            params: {
+                                type: 'hide'
+                            }
+                        });
+                    })
+					// 9.1 评论 NA 端能力联调
+                    document.getElementById('cmt-refresh').addEventListener('click', function (e) {
+                        e.preventDefault()
+                        BoxJS.invoke('comment.refresh', {
+                            params: {
+                                type: 'refresh'
+                            }
+                        });
+                    })
+                    var evetCallbackName = '__boxjs_comment_context_event_callback'
+                    window[evetCallbackName] = function (result) {
+                        alert('event_callback')
+                        alert(JSON.stringify(result))
+                    }
+                    document.getElementById('cmt-context').addEventListener('click', function (e) {
+                        e.preventDefault()
+                        BoxJS.invoke('comment.context', {
+                            params: {
+                                event_callback: evetCallbackName
+                            },
+                            callback: function (result) {
+                                alert('callback')
+                                alert(JSON.stringify(result))
+                            }
+                        });
+                    })
+
+                    // 9.1 统一 toast
+                    document.getElementById('new-toast').addEventListener('click', function (e) {
+                        e.preventDefault()
+                        BoxJS.invoke('utils.newToast', {
+                            params: {
+                                type: '1',
+                                message: '统一之后的 new toast'
+                            },
+                            callback: function (result) {
+                                alert(JSON.stringify(result))
+                            }
+                        });
+                    });
+                    document.getElementById('dismiss-toast').addEventListener('click', function (e) {
+                        e.preventDefault()
+                        BoxJS.invoke('utils.dismissToast')
+                    });
+
+                    // 9.0.5 iswebp
+                    document.getElementById('is-webp').addEventListener('click', function (e) {
+                        e.preventDefault()
+                        BoxJS.invoke('feed.isWebp', {
+                            callback: function (result) {
+                                alert(JSON.stringify(result))
+                            }
+                        })
+                    })
+
+                    // 9.1 idfa
+                    document.getElementById('get-idfa').addEventListener('click', function (e) {
+                        e.preventDefault()
+                        BoxJS.invoke('utils.getIdfa', {
+                            callback: function (result) {
+                                alert(JSON.stringify(result))
+                            }
+                        })
+                    })
+
+                    // 9.1 close-window
+                    document.getElementById('close-window').addEventListener('click', function (e) {
+                        e.preventDefault()
+                        BoxJS.invoke('utils.closeWindow', {
+                            callback: function (result) {
+                                alert(JSON.stringify(result))
+                            }
+                        })
+                    })
+
+                } else {
+                    console.log(JSON.stringify(obj));
+                }
+            }
+        });
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext("2d");
+        ctx.font = "30px Arial";
+        ctx.fillText("Hello World",10,50);
+        ctx.moveTo(0,60);
+        ctx.lineTo(200,60);
+        ctx.stroke();
+        var b64 = canvas.toDataURL().replace("data:image/png;base64,","");
+        console.log(md5(b64));
+    </script>
+</body>
+
+</html>
